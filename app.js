@@ -81,6 +81,11 @@
       time: "Saturday · 9:00 am",
       title: "Morning shift",
       text: "You’ve just taken over. Leela walks in with an adapter. Work out what was outstanding from the screening and close the loan for the right item.",
+      returnMatch: {
+        req: "RQ-214",
+        type: "USB-C → HDMI adapter",
+        person: "Leela Das",
+      },
     },
   ];
   const pages = [
@@ -228,6 +233,39 @@
         ? btn("Cancel", "cancel")
         : btn("New issue slip", "new", "", "primary"),
     );
+    if (s.phase === 2) {
+      const { req, type, person } = shifts[s.phase].returnMatch;
+      const matchingLoan = s.loans.find(
+        (loan) =>
+          loan.req === req &&
+          !loan.back &&
+          getAsset(loan.asset)?.type === type,
+      );
+      html +=
+        '<section class="return-match" aria-label="Return to match"><div><strong>Return from ' +
+        esc(person) +
+        "</strong><p>" +
+        (matchingLoan
+          ? esc(
+              getReq(req).event +
+                " · " +
+                matchingLoan.asset +
+                " · " +
+                type +
+                " · Slip L-" +
+                matchingLoan.num,
+            )
+          : "No outstanding " +
+            esc(type) +
+            " loan was found for " +
+            esc(getReq(req).event) +
+            ". Check the request and existing slips.") +
+        "</p></div>" +
+        (matchingLoan
+          ? btn("Record this return", "return", String(matchingLoan.num))
+          : "") +
+        "</section>";
+    }
     if (s.editing) {
       const available = assets.filter((a) => !a.repair && !out(a.id));
       const select = (label, key, options) =>

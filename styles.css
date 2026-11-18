@@ -269,6 +269,27 @@ body > main {
   background: var(--desk);
   border-left: 3px solid var(--sel);
 }
+#campus-stores .return-match {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--memo);
+  color: var(--memotxt);
+}
+#campus-stores .return-match p {
+  margin-top: 4px;
+}
+#campus-stores .return-match button {
+  flex-shrink: 0;
+  color: var(--memotxt);
+  border-color: var(--memotxt);
+  background: transparent;
+}
 #campus-stores .record p {
   margin-top: 5px;
 }
@@ -340,6 +361,10 @@ body > main {
   }
   #campus-stores .shift {
     flex-wrap: wrap;
+  }
+  #campus-stores .return-match {
+    align-items: stretch;
+    flex-direction: column;
   }
   #campus-stores .page {
     padding: 14px 12px;
