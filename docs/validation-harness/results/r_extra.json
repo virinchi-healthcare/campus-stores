@@ -1,0 +1,22 @@
+[
+ [
+  "Q1 RQ-214 form content unchanged",
+  "PASS",
+  ""
+ ],
+ [
+  "Q2 RQ-217 form content unchanged",
+  "PASS",
+  ""
+ ],
+ [
+  "P3 validation message is transient; reload shows last stored notice (unchanged behaviour)",
+  "PASS",
+  "Sample shift · All records are fictional."
+ ],
+ [
+  "D1 blank (whitespace) note rejected",
+  "PASS",
+  ""
+ ]
+]

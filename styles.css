@@ -38,6 +38,8 @@ body > main {
   --mark: light-dark(#bd502f, #f2a585);
   --ok: light-dark(#e3f1e8, #2d4838);
   --oktxt: light-dark(#25523d, #bedac8);
+  --warn: light-dark(#fbe3dc, #4d2a20);
+  --warntxt: light-dark(#8a2f14, #f8c6b3);
   background: var(--paper);
   color: var(--ink);
   font:
@@ -263,6 +265,48 @@ body > main {
   background: var(--ok);
   color: var(--oktxt);
 }
+#campus-stores .tag.warn {
+  background: var(--warn);
+  color: var(--warntxt);
+  font-weight: 600;
+}
+#campus-stores .tag.memo {
+  background: var(--memo);
+  color: var(--memotxt);
+}
+#campus-stores .hint {
+  margin: 0 0 4px;
+}
+#campus-stores .kit {
+  margin-top: 12px;
+  padding-left: 11px;
+  border-left: 3px solid var(--line);
+}
+#campus-stores .kit.overdue {
+  border-left-color: var(--mark);
+}
+#campus-stores .kithead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  padding: 6px 0 8px;
+}
+#campus-stores .kithead small {
+  display: block;
+}
+#campus-stores .acts {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+#campus-stores .row.done strong {
+  color: var(--quiet);
+  font-weight: 600;
+}
 #campus-stores .record {
   margin-top: 14px;
   padding: 12px 13px;
@@ -361,6 +405,15 @@ body > main {
   }
   #campus-stores .row {
     gap: 5px;
+  }
+  #campus-stores .kit .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #campus-stores .kit .acts {
+    justify-content: flex-start;
+  }
+  #campus-stores .kit {
+    padding-left: 8px;
   }
 }
 @media (pointer: coarse) {

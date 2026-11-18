@@ -1,0 +1,106 @@
+[
+ [
+  "N1 on-loan units not offered",
+  "PASS",
+  "['Select…', 'SP-02 · Portable speaker', 'SP-05 · Portable speaker', 'AD-12 · USB-C → HDMI adapter', 'AD-15 · USB-C → HDMI adapter', 'CA-03 · Digital camera']"
+ ],
+ [
+  "N2 in-repair PR-06 not offered",
+  "PASS",
+  ""
+ ],
+ [
+  "N3 type outside request refused",
+  "PASS",
+  "This equipment type is outside the approved request. Choose an approved unit."
+ ],
+ [
+  "N4 one unit per type per request (outstanding only)",
+  "PASS",
+  "The approved quantity of this equipment type is already on loan. | Issued AD-15 to Kabir Sen on slip L-404."
+ ],
+ [
+  "N4b register after return+reissue shows AD-15 Out (not old AD-12 Back)",
+  "PASS",
+  "'USB-C → HDMI adapter\\nAD-15 · Anker A8312 · bin C4\\nL-404 · Kabir Sen · Due Fri 8 pm\\nRecord return'"
+ ],
+ [
+  "N5 required fields; due/collector still unchecked (unchanged rule)",
+  "PASS",
+  "Issued PR-04 to Dev Menon on slip L-402."
+ ],
+ [
+  "N6 leaving the form discards it (unchanged)",
+  "PASS",
+  ""
+ ],
+ [
+  "N7 one-click return still immediate; empty state",
+  "PASS",
+  "MI-09 returned to stock. Slip L-401 closed. Everything issued on RQ-209 is back."
+ ],
+ [
+  "P1 refresh mid-shift identical",
+  "PASS",
+  ""
+ ],
+ [
+  "P1b grouped Outstanding identical after reload",
+  "PASS",
+  [
+   "Grouped by approved request. Each approved item shows whether it is out, back or not yet issued.",
+   "",
+   "RQ-214 · Courtyard screening"
+  ]
+ ],
+ [
+  "P2 half-filled form reopens empty (unchanged)",
+  "PASS",
+  ""
+ ],
+ [
+  "P4 restart from phase 2 restores seed",
+  "PASS",
+  ""
+ ],
+ [
+  "P4b restart survives reload",
+  "PASS",
+  ""
+ ],
+ [
+  "AC9 V1 (no note): register names adapter, slip and Overdue",
+  "PASS",
+  ""
+ ],
+ [
+  "K1 keyboard: Tab reaches labelled Record return, Enter closes L-404",
+  "PASS",
+  "8 Tab presses; focus outline=solid; status=AD-12 returned to stock. Slip L-404 closed. Everything issued on RQ-214 is back."
+ ],
+ [
+  "K1b focus after re-render",
+  "PASS",
+  "focus now on: BODY Product Engineer pra"
+ ],
+ [
+  "O1 original-format save loads unchanged in new app",
+  "PASS",
+  "old register showed: L-404 · AD-12 / RQ-214 · Kabir Sen · Due Fri 8 pm"
+ ],
+ [
+  "O1b new app can continue the old shift",
+  "PASS",
+  ""
+ ],
+ [
+  "O1c original app still reads the save written by new app",
+  "PASS",
+  ""
+ ],
+ [
+  "R-ERR no JS exceptions during regression",
+  "PASS",
+  "{'http://localhost:5500/favicon.ico'}"
+ ]
+]

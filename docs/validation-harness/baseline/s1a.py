@@ -1,0 +1,21 @@
+import sys; sys.path.insert(0, sys.argv[1])
+from cdp import *
+b = Browser()
+b.goto("http://localhost:5500/")
+print("== initial load, saved state:", b.saved())
+print(b.text()[:1500]); b.shot("01-initial-load")
+b.click("Restart sample shift")
+print("== after restart status:", b.status(), "| saved has phase:", json.loads(b.saved())["phase"])
+b.shot("02-after-restart-requests")
+for rq in ["RQ-214", "RQ-209", "RQ-217"]:
+    b.click_in_row(rq, "View form")
+    print("\n== request form", rq); print(b.text("[data-page]"))
+    b.shot(f"03-request-{rq}")
+    b.click("Back to list")
+b.click("Inventory")
+print("\n== Inventory (All items)"); print(b.text("[data-page]")); b.shot("04-inventory-all")
+for f in ["On shelf", "On loan", "In repair", "All items"]:
+    b.choose("document.querySelector('[data-filter]')", f)
+    print(f"\n== filter {f}"); print(b.text("[data-page]"))
+    if f != "All items": b.shot("05-inventory-" + f.replace(" ", "-").lower())
+print("\nERRORS:", b.errors())

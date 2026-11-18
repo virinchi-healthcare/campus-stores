@@ -1,0 +1,182 @@
+[
+ [
+  "A1 restart state == original seed",
+  "PASS",
+  "{\"version\": 1, \"tab\": \"Requests\", \"phase\": 0, \"selected\": \"\", \"filter\": \"All items\", \"loans\": [{\"num\": 401, \"req\": \"RQ-2"
+ ],
+ [
+  "A2 clock/banner at start",
+  "PASS",
+  ""
+ ],
+ [
+  "B1 three request forms open",
+  "PASS",
+  "RQ-214/209/217 opened and closed via View form / Back to list"
+ ],
+ [
+  "B2 inventory filters",
+  "PASS",
+  "{'On shelf': 6, 'On loan': 1, 'In repair': 1, 'All items': 8}"
+ ],
+ [
+  "AC1 initial Outstanding = RQ-209 group only",
+  "PASS",
+  ""
+ ],
+ [
+  "B3 slips L-402/L-403 issued",
+  "PASS",
+  "Issued PR-04 to Kabir Sen on slip L-402. / Issued SP-02 to Kabir Sen on slip L-403."
+ ],
+ [
+  "AC2 kit incomplete visible mid-issue",
+  "PASS",
+  "'USB-C → HDMI adapter\\nApproved on RQ-214 · no unit issued\\nNot issued'"
+ ],
+ [
+  "B4 slip L-404 issued",
+  "PASS",
+  "Issued AD-12 to Kabir Sen on slip L-404."
+ ],
+ [
+  "B5 issue effort unchanged vs baseline (18 clicks + 28 keys)",
+  "PASS",
+  "{'clicks': 18, 'keys': 28, 'typed': 0}"
+ ],
+ [
+  "AC3 complete kit shows 3 out, no Not issued",
+  "PASS",
+  ""
+ ],
+ [
+  "AC4 RQ-214 above RQ-209, no Overdue at Fri 3:45",
+  "PASS",
+  ""
+ ],
+ [
+  "B6 All slips lists 4 slips with types",
+  "PASS",
+  ""
+ ],
+ [
+  "B7 inventory after issue",
+  "PASS",
+  ""
+ ],
+ [
+  "B8 desk book phase 0 has Isha + Tara only",
+  "PASS",
+  ""
+ ],
+ [
+  "AC5 no Overdue at Fri 7:30 pm",
+  "PASS",
+  ""
+ ],
+ [
+  "B9 Kabir 7:30 message appears",
+  "PASS",
+  ""
+ ],
+ [
+  "AC6a return notices",
+  "PASS",
+  "PR-04 returned to stock. Slip L-402 closed. RQ-214 still has 2 items out. / SP-02 returned to stock. Slip L-403 closed. RQ-214 still has 1 item out."
+ ],
+ [
+  "AC6b group shows 1 out · 2 back, Back rows have no button",
+  "PASS",
+  "[['HDMI projector\\nPR-04 · BenQ MH550 · L-402\\nBack', False], ['Portable speaker\\nSP-02 · JBL Eon One · L-403\\nBack', False]]"
+ ],
+ [
+  "AC6c saved back flags",
+  "PASS",
+  ""
+ ],
+ [
+  "B10 partial return clicks = 2 (baseline 2)",
+  "PASS",
+  "{'clicks': 2, 'keys': 0, 'typed': 0}"
+ ],
+ [
+  "B11 All slips shows L-402/L-403 Returned",
+  "PASS",
+  ""
+ ],
+ [
+  "AC6d inventory PR-04/SP-02 on shelf, AD-12 on loan",
+  "PASS",
+  ""
+ ],
+ [
+  "B12 handover note saved",
+  "PASS",
+  ""
+ ],
+ [
+  "B13 Saturday phase, advance hidden, landed on Desk book",
+  "PASS",
+  ""
+ ],
+ [
+  "AC7a RQ-214 listed first with Overdue group tag",
+  "PASS",
+  ""
+ ],
+ [
+  "AC7b adapter row content",
+  "PASS",
+  "'USB-C → HDMI adapter\\nAD-12 · Belkin AVC002 · bin C4\\nL-404 · Kabir Sen · Due Fri 8 pm\\nOverdue\\nRecord return'"
+ ],
+ [
+  "AC7c RQ-209 mic not overdue (due Sat 10 am)",
+  "PASS",
+  "'Wireless microphone\\nMI-09 · Shure BLX · bin B3\\nL-401 · Tara Shah · Due Sat 10 am\\nRecord return'"
+ ],
+ [
+  "AC8 one click closes L-404 from register; RQ-214 group gone",
+  "PASS",
+  "AD-12 returned to stock. Slip L-404 closed. Everything issued on RQ-214 is back."
+ ],
+ [
+  "M1 morning navigation before return",
+  "PASS",
+  "tab clicks=['Desk book', 'Loan register']; total input incl. return click={'clicks': 3, 'keys': 0, 'typed': 0}"
+ ],
+ [
+  "AC10 All slips history with types, newest first",
+  "PASS",
+  ""
+ ],
+ [
+  "B14 final inventory",
+  "PASS",
+  ""
+ ],
+ [
+  "B15 final saved loans same as baseline",
+  "PASS",
+  ""
+ ],
+ [
+  "AC12a reload keeps identical state",
+  "PASS",
+  ""
+ ],
+ [
+  "AC12b saved key sets unchanged",
+  "PASS",
+  ""
+ ],
+ [
+  "AC11 empty state",
+  "PASS",
+  "MI-09 returned to stock. Slip L-401 closed. Everything issued on RQ-209 is back."
+ ],
+ [
+  "AC14 console: no JS exceptions; only favicon 404",
+  "PASS",
+  "2 log entries; 4xx urls={'http://localhost:5500/favicon.ico'}"
+ ]
+]

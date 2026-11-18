@@ -1,0 +1,20 @@
+import sys; sys.path.insert(0, sys.argv[1])
+from cdp import *
+R = []
+def check(i, ok, detail=""):
+    R.append((i, "PASS" if ok else "FAIL", detail)); print(("PASS " if ok else "FAIL ") + i, "|", detail)
+b = Browser()
+b.goto("http://localhost:5500/"); b.click("Restart sample shift")
+b.click_in_row("RQ-214", "View form"); t = b.text("[data-page]")
+check("Q1 RQ-214 form content unchanged", all(x in t for x in ["RQ-214 · Approved", "Courtyard screening", "Film Society · Filed by Isha Rao", "Return by Fri 8 pm", "HDMI projector", "Portable speaker", "USB-C → HDMI adapter", "Playback is from a USB-C-only laptop."]))
+b.click("Back to list"); b.click_in_row("RQ-217", "View form"); t = b.text("[data-page]")
+check("Q2 RQ-217 form content unchanged", "Street portrait walk" in t and "Digital camera" in t and "Return by Sat noon" in t)
+b.click("Back to list"); b.click("Loan register"); b.click("New issue slip")
+for n, v in (("req","RQ-214 · Film Society"),("asset","CA-03 · Digital camera"),("who","Kabir Sen"),("due","Fri 8 pm")): b.choose(sel_named(n), v)
+b.click("Save issue slip"); m = b.status(); b.reload()
+check("P3 validation message is transient; reload shows last stored notice (unchanged behaviour)", m.startswith("This equipment type") and b.status() == "Sample shift · All records are fictional.", b.status())
+b.click("Cancel"); b.click("Desk book")
+b.type_into("document.querySelector('#campus-stores textarea[name=note]')", "   "); b.click("Add handover note")
+check("D1 blank (whitespace) note rejected", json.loads(b.saved())["notes"] == [])
+b.click("Restart sample shift")
+json.dump(R, open(sys.argv[1] + "/r_extra.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)

@@ -158,6 +158,110 @@
     "</div></div>";
   const badge = (t, good = false) =>
     '<span class="tag' + (good ? " good" : "") + '">' + esc(t) + "</span>";
+  // Desk clock per shift phase and the issue form's return-by labels, as
+  // minutes from Friday 00:00, so a slip can be compared with the desk time.
+  const deskAt = [945, 1170, 1980];
+  const dueAt = {
+    "Fri 8 pm": 1200,
+    "Sat 9 am": 1980,
+    "Sat 10 am": 2040,
+    "Sat noon": 2160,
+  };
+  const late = (l) => !l.back && dueAt[l.due] < deskAt[s.phase];
+  const tag = (t, kind) =>
+    '<span class="tag ' + kind + '">' + esc(t) + "</span>";
+  // Outstanding slips grouped by request. Every approved type is listed as
+  // Out, Not issued or Back so the whole kit is visible in one place.
+  function kits() {
+    return requests
+      .map((r, order) => {
+        const slips = s.loans.filter((l) => l.req === r.id);
+        const types = [...r.items];
+        for (const l of slips) {
+          const t = getAsset(l.asset).type;
+          if (!types.includes(t)) types.push(t);
+        }
+        const items = [];
+        types.forEach((type, i) => {
+          const mine = slips.filter((l) => getAsset(l.asset).type === type);
+          const open = mine.filter((l) => !l.back);
+          if (open.length)
+            for (const l of open) items.push({ type, i, rank: 0, l });
+          else if (mine.length)
+            items.push({ type, i, rank: 2, l: mine[mine.length - 1] });
+          else items.push({ type, i, rank: 1 });
+        });
+        items.sort((a, b) => a.rank - b.rank || a.i - b.i);
+        const open = items.filter((x) => x.rank === 0);
+        return {
+          r,
+          order,
+          items,
+          open,
+          late: open.some((x) => late(x.l)),
+          next: Math.min(...open.map((x) => dueAt[x.l.due] ?? Infinity)),
+        };
+      })
+      .filter((k) => k.open.length)
+      .sort((a, b) => b.late - a.late || a.next - b.next || a.order - b.order);
+  }
+  function kitHtml(k) {
+    const count = (rank) => k.items.filter((x) => x.rank === rank).length;
+    const summary = [
+      [count(0), "out"],
+      [count(1), "not issued"],
+      [count(2), "back"],
+    ]
+      .filter(([n]) => n)
+      .map(([n, t]) => n + " " + t)
+      .join(" · ");
+    let html =
+      '<section class="kit' +
+      (k.late ? " overdue" : "") +
+      '"><div class="kithead"><div><h3>' +
+      esc(k.r.id + " · " + k.r.event) +
+      "</h3><small>" +
+      esc(k.r.club + " · Return by " + k.r.due) +
+      '</small></div><div class="acts"><small>' +
+      esc(summary) +
+      "</small>" +
+      (k.late ? tag("Overdue", "warn") : "") +
+      "</div></div>";
+    for (const x of k.items) {
+      const a = x.l && getAsset(x.l.asset);
+      let lines, right;
+      if (x.rank === 0) {
+        lines = [
+          a.id + " · " + a.model + " · bin " + a.bin,
+          "L-" + x.l.num + " · " + x.l.who + " · Due " + x.l.due,
+        ];
+        right =
+          (late(x.l) ? tag("Overdue", "warn") : "") +
+          '<button type="button" data-action="return" data-val="' +
+          x.l.num +
+          '" aria-label="' +
+          esc("Record return of " + a.id + " " + x.type + ", slip L-" + x.l.num) +
+          '">Record return</button>';
+      } else if (x.rank === 2) {
+        lines = [a.id + " · " + a.model + " · L-" + x.l.num];
+        right = tag("Back", "muted");
+      } else {
+        lines = ["Approved on " + k.r.id + " · no unit issued"];
+        right = tag("Not issued", "memo");
+      }
+      html +=
+        '<div class="row' +
+        (x.rank === 2 ? " done" : "") +
+        '"><div><strong>' +
+        esc(x.type) +
+        "</strong>" +
+        lines.map((t) => "<small>" + esc(t) + "</small>").join("") +
+        '</div><div class="acts">' +
+        right +
+        "</div></div>";
+    }
+    return html + "</section>";
+  }
   function requestPage() {
     let html = head(
       "Approved requests",
@@ -279,14 +383,20 @@
         )
         .join("") +
       "</div>";
-    const shown = s.loans
-      .filter((l) => !s.onlyOpen || !l.back)
-      .slice()
-      .reverse();
+    if (s.onlyOpen) {
+      const open = kits();
+      if (!open.length) return html + "<p>No outstanding slips.</p>";
+      return (
+        html +
+        '<p class="hint"><small>Grouped by approved request. Each approved item shows whether it is out, back or not yet issued.</small></p>' +
+        open.map(kitHtml).join("")
+      );
+    }
+    const shown = s.loans.slice().reverse();
     if (!shown.length) html += "<p>No outstanding slips.</p>";
     for (const l of shown)
       html += row(
-        "L-" + l.num + " · " + l.asset,
+        "L-" + l.num + " · " + l.asset + " · " + getAsset(l.asset).type,
         l.req + " · " + l.who + " · Due " + l.due,
         l.back
           ? badge("Returned")
@@ -410,7 +520,15 @@
         const l = s.loans.find((l) => l.num === Number(v));
         if (!l || l.back) return;
         l.back = true;
-        s.notice = l.asset + " returned to stock. Slip L-" + l.num + " closed.";
+        const left = s.loans.filter((x) => x.req === l.req && !x.back).length;
+        s.notice =
+          l.asset +
+          " returned to stock. Slip L-" +
+          l.num +
+          " closed. " +
+          (left
+            ? l.req + " still has " + left + (left === 1 ? " item" : " items") + " out."
+            : "Everything issued on " + l.req + " is back.");
         break;
       }
     }
